@@ -126,11 +126,11 @@ class SqlserverTest extends TestCase
             'settings' => ['config1' => 'value1', 'config2' => 'value2'],
         ];
         $driver = $this->getMockBuilder('Cake\Database\Driver\Sqlserver')
-            ->setMethods(['_connect', 'connection'])
+            ->setMethods(['_connect', 'setConnection', 'getConnection'])
             ->setConstructorArgs([$config])
             ->getMock();
         $dsn = 'sqlsrv:Server=foo;Database=bar;MultipleActiveResultSets=false';
-
+debug(1);
         $expected = $config;
         $expected['flags'] += [
             PDO::ATTR_EMULATE_PREPARES => false,
@@ -144,7 +144,7 @@ class SqlserverTest extends TestCase
         $expected['loginTimeout'] = null;
         $expected['multiSubnetFailover'] = null;
         $expected['port'] = null;
-
+debug(2);
         $connection = $this->getMockBuilder('stdClass')
             ->setMethods(['exec', 'quote'])
             ->getMock();
@@ -155,20 +155,20 @@ class SqlserverTest extends TestCase
                 $this->returnArgument(0),
                 $this->returnArgument(0)
             ));
-
+debug(3);
         $connection->expects($this->at(0))->method('exec')->with('Execute this');
         $connection->expects($this->at(1))->method('exec')->with('this too');
         $connection->expects($this->at(2))->method('exec')->with('SET config1 value1');
         $connection->expects($this->at(3))->method('exec')->with('SET config2 value2');
-
-        $driver->setConnection($connection);
+debug(4);
+        $driver->setConnection($connection);debug(5);
         $driver->expects($this->once())->method('_connect')
             ->with($dsn, $expected);
-
-        $driver->expects($this->any())->method('connection')
+debug(6);
+        $driver->expects($this->any())->method('getConnection')
             ->will($this->returnValue($connection));
-
-        $driver->connect();
+debug(7);
+        $driver->connect();debug(8);
     }
 
     /**
