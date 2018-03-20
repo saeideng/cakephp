@@ -65,9 +65,9 @@ class Sqlserver extends Driver
      */
     public function connect()
     {
-        if ($this->_connection) {
+        if ($this->_connection) {debug("class:1");
             return true;
-        }
+        }debug("class:2");
         $config = $this->_config;
 
         if (isset($config['persistent']) && $config['persistent']) {
@@ -102,9 +102,9 @@ class Sqlserver extends Driver
         }
         if ($config['multiSubnetFailover'] !== null) {
             $dsn .= ";MultiSubnetFailover={$config['multiSubnetFailover']}";
-        }
+        }debug("class:3");
         $this->_connect($dsn, $config);
-
+debug("class:4");
         $connection = $this->getConnection();
         if (!empty($config['init'])) {
             foreach ((array)$config['init'] as $command) {
@@ -120,7 +120,7 @@ class Sqlserver extends Driver
             foreach ($config['attributes'] as $key => $value) {
                 $connection->setAttribute($key, $value);
             }
-        }
+        }debug("class:5");
 
         return true;
     }
