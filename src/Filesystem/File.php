@@ -86,7 +86,7 @@ class File
         $splInfo = new SplFileInfo($path);
         $this->Folder = new Folder($splInfo->getPath(), $create, $mode);
         if (!is_dir($path)) {
-            $this->name = ltrim($splInfo->getFilename(), DS);
+            $this->name = ltrim($splInfo->getFilename(), '/\\');
         }
         $this->pwd();
         $create && !$this->exists() && $this->safe($path) && $this->create();
@@ -370,7 +370,7 @@ class File
 
         $splInfo = new SplFileInfo($path);debug($splInfo->getFilename());
         debug(DS);
-        $name = ltrim($splInfo->getFilename(), DS);
+        $name = ltrim($splInfo->getFilename(), '/\\');
 
         if ($ext === null || $ext === '') {
             return $name;
