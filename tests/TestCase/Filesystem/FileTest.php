@@ -124,6 +124,70 @@ class FileTest extends TestCase
     }
 
     /**
+     * testUtf8Filenames
+     *
+     * @link https://github.com/cakephp/cakephp/issues/11749
+     * @return void
+     */
+    public function testUtf8Filenames()
+    {
+        $File = new File(TMP . 'tests/permissions/نام فارسی.php', true);
+        $this->assertEquals('نام فارسی', $File->name());
+        $this->assertTrue($File->exists());
+        $this->assertTrue($File->readable());
+    }
+
+    /**
+     * Test _basename method
+     * @dataProvider baseNameValueProvider
+     * @return void
+     */
+    public function testBasename($path, $suffix)
+    {
+        $class = new \ReflectionClass('Cake\Filesystem\File');
+        $method = $class->getMethod('_basename');
+        $method->setAccessible(true);
+        if ($suffix === null) {
+            $this->assertEquals(basename($path), $method->invokeArgs(null, [$path]));
+        } else {
+            $this->assertEquals(basename($path, $suffix), $method->invokeArgs(null, [$path, $suffix]));
+        }
+    }
+
+    /**
+     * Data provider for testBasename().
+     *
+     * @return array
+     */
+    public function baseNameValueProvider()
+    {
+        return [
+            ['folder/نام.txt', null],
+            ['folder/نام فارسی.txt', null],
+            ['نام.txt', null],
+            ['نام فارسی.txt', null],
+            ['/نام.txt', null],
+            ['/نام فارسی.txt', null],
+            //
+            ['folder/نام.txt', '.txt'],
+            ['folder/نام فارسی.txt', '.txt'],
+            ['نام.txt', '.txt'],
+            ['نام فارسی.txt', '.txt'],
+            ['/نام.txt', '.txt'],
+            ['/نام فارسی.txt', '.txt'],
+            //
+            ['abcde.ab', '.abe'],
+            ['/etc/sudoers.d', null],
+            ['/etc/.d', '.d'],
+            ['/etc/sudoers.d', '.d'],
+            ['/etc/passwd', null],
+            ['/etc/', null],
+            ['.', null],
+            ['/', null],
+        ];
+    }
+
+    /**
      * testPermission method
      *
      * @return void
