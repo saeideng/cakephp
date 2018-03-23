@@ -368,7 +368,8 @@ class File
             return ($ext===null)? basename($path) : basename($path, $ext);
         }
 
-        $splInfo = new SplFileInfo($path);
+        $splInfo = new SplFileInfo($path);debug($splInfo->getFilename());
+        debug(DS);
         $name = ltrim($splInfo->getFilename(), DS);
 
         if ($ext === null || $ext === '') {
