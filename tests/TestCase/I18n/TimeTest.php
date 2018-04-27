@@ -466,7 +466,7 @@ class TimeTest extends TestCase
         $expected = 'Thursday, Dey 24, 1388 at 1:59:28 PM GMT';
         $this->assertTimeFormat($expected, $result);
 
-        $result = $time->i18nFormat(\IntlDateFormatter::FULL, null, 'fa-IR@calendar=persian');
+        $result = $time->i18nFormat(\IntlDateFormatter::FULL, 'Asia/Tehran', 'fa-IR@calendar=persian');
         $expected = 'پنجشنبه ۲۴ دی ۱۳۸۸، ساعت ۱۳:۵۹:۲۸ GMT';
         $this->assertTimeFormat($expected, $result);
 
